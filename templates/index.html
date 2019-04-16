@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+
+    <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+
+    <title>{{ page_title }}</title>
+  </head>
+  <body>
+
+    <div class="container">
+      <p>
+        {{ json }}
+      </p>
+    </div>
+
+    <div class="content">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="question">
+              Aşağıdakilerden hangisi aşağıdadır?
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <a href="#">
+              <div class="answer">
+                Ahmet
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="#">
+              <div class="answer">
+                Ahmet
+              </div>
+            </a>
+          </div>
+          <div class="col-md-4">
+            <a href="#">
+              <div class="answer">
+                Ahmet
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>
