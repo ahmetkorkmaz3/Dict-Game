@@ -4,52 +4,120 @@
     <meta charset="utf-8">
 
     <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.4.0.min.js') }}"></script>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     <title>{{ page_title }}</title>
   </head>
   <body>
 
-    <div class="container">
-      <p>
-        {{ json }}
-      </p>
-    </div>
-
     <div class="content">
       <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <div class="question">
-              Aşağıdakilerden hangisi aşağıdadır?
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          {% for i in range(len(questions)) %}
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#{{ i }}" role="tab" aria-controls="home" aria-selected="true">{{ i+1 }} . Soru</a>
+          </li>
+          {% endfor %}
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          {% for count in range(len(questions)) %}
+          <div class="tab-pane fade show" id="{{ count }}" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="question">
+                  {{ questions[count] }}
+                </div>
+              </div>
             </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <a href="#">
+                  <div class="answer">
+                    {{ i }}
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="#">
+                  <div class="answer">
+                    Ahmet
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-4">
+                <a href="#">
+                  <div class="answer">
+                    Ahmet
+                  </div>
+                </a>
+              </div>
+            </div>
+
           </div>
+          {% endfor %}
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <a href="#">
-              <div class="answer">
-                Ahmet
-              </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="#">
-              <div class="answer">
-                Ahmet
-              </div>
-            </a>
-          </div>
-          <div class="col-md-4">
-            <a href="#">
-              <div class="answer">
-                Ahmet
-              </div>
-            </a>
-          </div>
-        </div>
+
       </div>
     </div>
+
+
+
+<!-- Tab content -->
+
+
+
+
+<!-- Tab carousel -->
+
+<button class="prevtab btn btn-success">Prev</button>
+
+<button class="nexttab btn btn-success">Next</button>
+
+<script>
+
+function bootstrapTabControl(){
+  var i, items = $('.nav-link'), pane = $('.tab-pane');
+  // next
+  $('.nexttab').on('click', function(){
+      for(i = 0; i < items.length; i++){
+          if($(items[i]).hasClass('active') == true){
+              break;
+          }
+      }
+      if(i < items.length - 1){
+          // for tab
+          $(items[i]).removeClass('active');
+          $(items[i+1]).addClass('active');
+          // for pane
+          $(pane[i]).removeClass('show active');
+          $(pane[i+1]).addClass('show active');
+      }
+
+  });
+  // Prev
+  $('.prevtab').on('click', function(){
+      for(i = 0; i < items.length; i++){
+          if($(items[i]).hasClass('active') == true){
+              break;
+          }
+      }
+      if(i != 0){
+          // for tab
+          $(items[i]).removeClass('active');
+          $(items[i-1]).addClass('active');
+          // for pane
+          $(pane[i]).removeClass('show active');
+          $(pane[i-1]).addClass('show active');
+      }
+  });
+}
+bootstrapTabControl();
+
+</script>
+
 
   </body>
 </html>
