@@ -4,8 +4,8 @@ import json
 
 app = Flask(__name__)
 
-app_id = "9e47702d"
-app_key = "7ae2304d9e92db2b1b01ca9128ac6eba"
+app_id = "de9425de"
+app_key = "a9606bfd23d2e9fef2d545c6264cb64d"
 language = "en"
 words = ["strong", "example", "snow", "car", "table"]
 correct_words = ["affect", "software", "engineer", "camel", "week"]
@@ -14,15 +14,17 @@ synonyms_words = {}
 sentences = []
 
 for word in words:
-    sentence_url = "https://od-api.oxforddictionaries.com/api/v2/entries/en/" + word
+    sentence_url = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + word + "/sentences"
     r = requests.get(sentence_url, headers={
         "app_id": app_id,
-        "app_key": app_key,
+        "app_key": app_key
     })
+
     temp = r.json()
-    sentence = temp['results'][0]['lexicalEntries'][0]['entries'][0]['senses'][0]['subsenses'][0]['examples'][0]['text']
+    sentence = temp['results'][0]['lexicalEntries'][0]['sentences'][0]['text']
     sentence = sentence.replace(word, "_______")
     sentences.append(sentence)
+    print(sentences)
 
     synonyms_url = "https://wordsapiv1.p.rapidapi.com/words/" + word + "/synonyms"
     s = requests.get(synonyms_url, headers={
@@ -31,7 +33,6 @@ for word in words:
     })
     temp2 = s.json()
     synonyms_words[word] = temp2['synonyms'][0]
-
 
 @app.route('/')
 def index():

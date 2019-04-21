@@ -34,25 +34,13 @@
 
             <div class="row">
               <div class="col-md-4">
-                <a href="#">
-                  <div class="answer">
-                    {{ words[count] }}
-                  </div>
-                </a>
+                <button class="answer answer-button" type="button" name="{{ words[count] }}">{{ words[count] }}</button>
               </div>
               <div class="col-md-4">
-                <a href="#">
-                  <div class="answer">
-                    {{ synonyms[words[count]] }}
-                  </div>
-                </a>
+                <button class="answer answer-button" type="button" name="{{ synonyms[words[count]] }}">{{ synonyms[words[count]] }}</button>
               </div>
               <div class="col-md-4">
-                <a href="#">
-                  <div class="answer">
-                    {{ correct_words[count] }}
-                  </div>
-                </a>
+                <button class="answer answer-button" type="button" name="{{ correct_words[count] }}">{{ correct_words[count] }}</button>
               </div>
             </div>
 
@@ -65,15 +53,6 @@
 
       </div>
     </div>
-
-
-
-<!-- Tab content -->
-
-
-
-
-<!-- Tab carousel -->
 
 <script>
 
@@ -112,9 +91,15 @@ function bootstrapTabControl(){
           $(pane[i-1]).addClass('show active');
       }
   });
-}
-bootstrapTabControl();
+/*
+  $('.answer').on('click', function(e){
+    console.log(e.target.innerText);
+  });
+*/
 
+}
+
+bootstrapTabControl();
 </script>
 
 
