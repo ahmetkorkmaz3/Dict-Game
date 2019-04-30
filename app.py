@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 import requests
 import json
 
@@ -14,6 +14,7 @@ synonyms_words = {}
 sentences = []
 
 for word in words:
+    """
     sentence_url = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + word + "/sentences"
     r = requests.get(sentence_url, headers={
         "app_id": app_id,
@@ -24,8 +25,9 @@ for word in words:
     sentence = temp['results'][0]['lexicalEntries'][0]['sentences'][0]['text']
     sentence = sentence.replace(word, "_______")
     sentences.append(sentence)
-    print(sentences)
 
+    print(sentences)
+    """
     synonyms_url = "https://wordsapiv1.p.rapidapi.com/words/" + word + "/synonyms"
     s = requests.get(synonyms_url, headers={
         "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com",
@@ -34,9 +36,20 @@ for word in words:
     temp2 = s.json()
     synonyms_words[word] = temp2['synonyms'][0]
 
+#print(synonyms_words)
+#sentence=sentences[question_id],
+
+@app.route('/question/<int:question_id>', methods=['POST', 'GET'])
+def question(question_id):
+    if request.method == 'POST':
+        result = request.form
+        return result
+    else:
+        return render_template('question.html', correct_word=correct_words[question_id], synonym=synonyms_words)
+
 @app.route('/')
 def index():
-    return render_template('index.html', questions=sentences, words=words, synonyms=synonyms_words, correct_words=correct_words)
+    return render_template('index.html')
 
 if __name__ == "__main__":
     app.run(debug = True)
