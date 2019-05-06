@@ -4,7 +4,6 @@
     <meta charset="utf-8">
 
     <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery-3.4.0.min.js') }}"></script>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     <title>{{ page_title }}</title>
@@ -13,7 +12,19 @@
 
     <div class="content">
       <div class="container">
-        <form action="/" method="POST">
+        <form action="/question/{{ (question_id+1) }}" method="POST">
+          {% if warning %}
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-danger">
+                Wrong answer
+              </div>
+            </div>
+          </div>
+
+          {% endif %}
+
           <div class="row">
             <div class="col-md-12">
               <div class="question">
@@ -24,20 +35,20 @@
           <div class="row">
             <div class="col-md-4">
               <div class="answer">
-                <input type="radio" id="answer1" name="answer" value="answer1">
-                <label for="answer1">{{ correct_word }}</label>
+                <input type="radio" id="answer1" name="answer" value="{{ synonym[word] }}">
+                <label for="answer1">{{ synonym[word] }}</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="answer">
-                <input type="radio" id="answer2" name="answer" value="answer2">
+                <input type="radio" id="answer2" name="answer" value="{{ correct_word }}">
                 <label for="answer2">{{ correct_word }}</label>
               </div>
             </div>
             <div class="col-md-4">
               <div class="answer">
-                <input type="radio" id="answer3" name="answer" value="answer3">
-                <label for="answer3">{{ correct_word }}</label>
+                <input type="radio" id="answer3" name="answer" value="{{ word }}">
+                <label for="answer3">{{ word }}</label>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, jsonify
 import requests
 import json
 
@@ -14,7 +14,7 @@ synonyms_words = {}
 sentences = []
 
 for word in words:
-    """
+
     sentence_url = "https://od-api.oxforddictionaries.com:443/api/v1/entries/en/" + word + "/sentences"
     r = requests.get(sentence_url, headers={
         "app_id": app_id,
@@ -26,8 +26,6 @@ for word in words:
     sentence = sentence.replace(word, "_______")
     sentences.append(sentence)
 
-    print(sentences)
-    """
     synonyms_url = "https://wordsapiv1.p.rapidapi.com/words/" + word + "/synonyms"
     s = requests.get(synonyms_url, headers={
         "X-RapidAPI-Host": "wordsapiv1.p.rapidapi.com",
@@ -36,20 +34,49 @@ for word in words:
     temp2 = s.json()
     synonyms_words[word] = temp2['synonyms'][0]
 
-#print(synonyms_words)
-#sentence=sentences[question_id],
-
 @app.route('/question/<int:question_id>', methods=['POST', 'GET'])
 def question(question_id):
     if request.method == 'POST':
-        result = request.form
-        return result
+        if question_id < 5:
+            answer = request.form['answer']
+            if answer == correct_words[question_id-1]:
+                return render_template(
+                    'question.html',
+                    question_id=question_id,
+                    word=words[question_id],
+                    sentence=sentences[question_id],
+                    correct_word=correct_words[question_id],
+                    synonym=synonyms_words
+                )
+            else:
+                return render_template(
+                    'question.html',
+                    question_id=question_id-1,
+                    word=words[question_id-1],
+                    sentence=sentences[question_id-1],
+                    correct_word=correct_words[question_id-1],
+                    synonym=synonyms_words,
+                    warning="wrong answer"
+                )
+        else:
+            return render_template('correct.html')
     else:
-        return render_template('question.html', correct_word=correct_words[question_id], synonym=synonyms_words)
+        return render_template(
+            'question.html',
+            question_id=question_id,
+            word=words[question_id],
+            sentence=sentences[question_id],
+            correct_word=correct_words[question_id],
+            synonym=synonyms_words
+        )
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/correct')
+def correct():
+    return render_template('correct.html')
 
 if __name__ == "__main__":
     app.run(debug = True)
